@@ -1,0 +1,9 @@
+venv/
+*.log
+*.pot
+*.pyc
+trocalivro/library/__pycache__/
+trocalivro/library/migrations/
+trocalivro/db.sqlite3
+trocalivro/library/static/images/
+.env
