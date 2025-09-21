@@ -1,3 +1,7 @@
 from django.contrib import admin
+from library.models import Profile, Book
 
-# Register your models here.
+
+# Registrando os modelos.
+admin.site.register(Profile)
+admin.site.register(Book)
