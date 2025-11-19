@@ -1,0 +1,49 @@
+<!--barra de navegação do perfil do usuário-->
+
+
+    {% block content %}
+    <div class="profile-sidebar">
+      <div class="user-container">
+        <p class="user-name">Olá, {{ user.profile.firstname }}!</p>
+        <div class="user-picture">
+          <img src="#" alt=""> <!--ADICIONAR FOTO DO USUÁRIO DO BANCO DE DADOS-->
+          <form class="send-book" method="post" action="{% url 'book-add' %}">
+            {% csrf_token %}
+            <button class="add-book-btn" type="submit">Adicionar livro</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        {% if user.is_authenticated %}
+          <p class="menu-heading">Solicitações</p>
+          <li>
+            <a class="menu-option" href="{% url 'send-books' %}">
+              <i class="bi bi-arrow-right-square"></i>
+              Enviadas
+            </a>
+          </li>
+          <li>
+            <a class="menu-option" href="{% url 'received-books' %}">
+              <i class="bi bi-inbox"></i>
+              Recebidas
+            </a>
+          </li>
+          <p class="menu-heading"> Minha conta </p>
+          <li>
+            <a class="menu-option" href="{% url 'users-edit' %}">
+              <i class="bi bi-person"></i>
+              Editar perfil
+            </a>
+          </li>
+          <li>
+            <a class="menu-option" href="{% url 'users-profile' %}">
+              <i class="bi bi-bookmark-heart"></i>
+              Meus livros
+          </a>
+          </li>
+          {% endif %}
+      </div>
+    </div>
+  {% endblock %}
+

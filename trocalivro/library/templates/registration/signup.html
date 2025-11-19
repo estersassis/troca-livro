@@ -1,0 +1,28 @@
+{%extends "base_generic.html"%}
+
+{% block content%}
+    <div class="container">
+        <div class="form">
+            <div class="form-header">
+                <div class="title">
+                    <h1>Cadastre-se</h1>
+                    <p>Preencha seus dados</p>
+                </div>
+                <div class="subtitle">
+                </div>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    {% for field in form %}
+                        <div class="input-box">
+                            <label for="firstname">{{ field.label_tag }}</label>
+                            {{ field }} 
+                        </div>
+                    {% endfor %}
+                </div>
+                    <input class="submit-button" type="submit" value="Enviar">
+            </form>
+        </div>
+    </div>
+{% endblock %}

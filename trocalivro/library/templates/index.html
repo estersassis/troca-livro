@@ -1,0 +1,52 @@
+{% extends "base_generic.html" %}
+
+
+{% block content %}
+<div class="index-card">
+  <div class="card-image">
+    {% load static %}
+    <img src="{% static 'images/trocalivro-card.svg' %}" alt="Logo">
+  </div>
+  <div class="card-text">
+    <div class="card-title">
+      <h1 class="card-heading">Troque um livro velho por uma nova leitura</h1>
+    </div>
+    <div class="card-body">
+      <p>Você não precisa comprar livros para descobrir 
+        <span>leituras incríveis.</span><br>
+        Seja um membro da nossa comunidade e troque livros antigos por 
+        <span>livros que ainda não leu!</span>
+      </p>
+    </div>
+    <div class="card-btn">
+      {% if not user.is_authenticated %}
+        <button><a href="{% url 'login' %}">Começar</a></button>
+      {%endif%}
+    </div>
+  </div>
+</div>
+<div class="index-main-content">
+    <h2 class="page-title">Últimos livros cadastrados</h2>
+    <div class="books-container">
+       {% for book in book_list %}
+         <div class="user-book">  
+          <span class="book-owner">{{book.owner.firstname}}</span>
+          <span>quer trocar</span>
+          {% if book.image %}
+           <a href="{% url 'book-detail' id=book.id %}">
+               {%load static %}
+               <img src="{%static book.image_display_url %}" alt="{{ book.title }}">
+            </a>
+              {% else %}
+              <a href="{% url 'book-detail' id=book.id %}">
+                {%load static %}
+                <img src="{%static 'images/no-image.png' %}" alt="No image available">
+              </a>
+             {% endif %}
+             <p class="book-title">{{ book.title }}</p>
+             <p class="book-author">{{book.author}}</p>
+         </div>  
+       {% endfor %}
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% block content %}
+{% include "profile_generic.html" %}
+<div class="profile-page">
+  <h2 class="page-title"> Solicitações enviadas </h2>
+  <div class="books-container">
+    {% for book in user_books %}
+    <div class="user-book">
+      <span class="book-request">Você</span> 
+      <span>solicitou para</span>
+      <span class="book-request">{{book.owner.firstname}}</span>
+      {% if book.image %}
+      <a href="{% url 'book-detail' id=book.id %}">
+      {%load static %}
+        <img src="{%static book.image_display_url %}" alt="{{ book.title }}">
+    </a>
+      {% else %}
+      <a href="{% url 'book-detail' id=book.id %}">
+        {%load static %}
+        <img src="{%static 'images/no-image.png' %}" alt="No image available">
+      </a>
+      {% endif %}
+      <p class="book-title">{{ book.title }}</p>
+      <p class="book-author">{{ book.author }}</p> 
+    </div> 
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

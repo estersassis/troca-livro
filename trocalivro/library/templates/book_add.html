@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+{% block content %}
+{% include "profile_generic.html" %}
+<div class="profile-page">
+    <h2 class="page-title"> Adicionar um livro para troca </h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="input-profile">
+                <label for="id_name">Título</label>
+                {{ form.title }}
+            </div>
+            
+            <div class="input-profile">
+                <label for="id_author">Autor</label>
+                {{ form.author }}
+            </div>
+
+            <div class="input-profile">
+                <label for="id_description">Descrição</label>
+                {{ form.description }}
+            </div>
+
+            <div class="input-profile">
+                <label for="id_tag">Categoria</label>
+                {{ form.genre }}
+            </div>
+
+            <div class="input-profile">
+                <label for="id_picture">Imagem</label>
+                {{ form.image }}
+            </div>
+            {% comment %} Foi retirado o campo de definição do status {% endcomment %}
+
+            <button class="input-profile-btn" type="submit">Enviar</button>
+        
+        </form>
+</div>
+{% endblock %}

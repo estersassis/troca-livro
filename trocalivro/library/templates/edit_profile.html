@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+{% block content %}
+{% include "profile_generic.html" %}
+<div class="profile-page">
+    <h2 class="page-title"> Editar perfil </h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-profile">
+            <label for="id_name">Nome</label>
+            {{ form.firstname }}
+        </div>
+        
+        <div class="input-profile">
+            <label for="id_lastname">Sobrenome</label>
+            {{ form.lastname }}
+        </div>
+
+        <div class="input-profile">
+            <label for="id_email">E-mail</label>
+            {{ form.email }}
+        </div>
+
+        <div class="input-profile">
+            <label for="id_phone">Celular</label>
+            {{ form.phone_number }}
+        </div>
+
+        <div class="input-profile">
+            <label for="id_address">Endereço</label>
+            {{ form.address }}
+        </div>
+        {% comment %} Foi retirado o campo de definição do status {% endcomment %}
+        <button class="input-profile-btn" type="submit">Enviar</button>
+    </form>  
+  </div>
+{% endblock %}
