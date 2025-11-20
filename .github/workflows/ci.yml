@@ -31,13 +31,13 @@ jobs:
           
       - name: Run Unit Tests
         run: |
-          pytest -q
+          pytest trocalivro/library/tests.py
 
       - name: Run Selenium Tests (E2E)
         run: |
           # O ubuntu-latest já vem com Chrome instalado
           # Certifique-se que o código usa o modo --headless
-          pytest -q
+          pytest trocalivro/library/tests.py
 
   coverage:
     name: Coverage (Ubuntu / Python 3.12)
