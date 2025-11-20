@@ -1,18 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from .services.exchange_service import create_exchange_request, BookExchangeError
-
-
 
 def display_book_image(book):
     ...
 
 def index(request):
     ...
-
 
 def signup(request):
     ...
@@ -61,3 +59,28 @@ def request_exchange_view(request, id):
     else:
         messages.success(request, "Solicitação enviada com sucesso!")
         return redirect('send-books')
+
+def login_view(request):
+    # Se o usuário já estiver logado, manda para o index ou perfil
+    if request.user.is_authenticated:
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Bem-vindo de volta, {username}!")
+                next_url = request.GET.get('next', 'index')
+                return redirect(next_url)
+            
+        else:
+            messages.error(request, "Usuário ou senha inválidos.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'registration/login.html', {'form': form})
