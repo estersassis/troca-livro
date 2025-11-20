@@ -18,5 +18,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     # Path da solicitação de troca de um livro 
-    path('book/<int:id>/request/', views.request, name='book-request')
+    path('book/<int:id>/request/', views.request_exchange_view, name='book-request')
 ]

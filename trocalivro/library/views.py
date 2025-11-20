@@ -1,5 +1,10 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from .services.exchange_service import create_exchange_request, BookExchangeError
+
 
 
 def display_book_image(book):
@@ -42,6 +47,17 @@ def book_detail_view(request, id):
 def search_book(request):
     ...
     
-# Função responsável por tratar as trocas entre os livros 
-def request(request, id):
-    ...
+# View para solicitar a troca de um livro
+@login_required
+def request_exchange_view(request, id):
+    if request.method != 'POST':
+        return redirect('index')
+
+    try:
+        create_exchange_request(book_id=id, requester_profile=request.user.profile)
+    except BookExchangeError as e:
+        messages.warning(request, str(e))
+        return redirect('index')
+    else:
+        messages.success(request, "Solicitação enviada com sucesso!")
+        return redirect('send-books')
