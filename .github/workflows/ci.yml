@@ -29,15 +29,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Rodar Testes Unitários
+      - name: Run Unit Tests
         run: |
           pytest trocalivro/library/tests.py
 
       - name: Run Selenium Tests (E2E)
         run: |
           # O ubuntu-latest já vem com Chrome instalado
-          # Certifique-se que seu código usa o modo --headless
-          pytest tests/selenium/ 
+          # Certifique-se que o código usa o modo --headless
+          pytest trocalivro/library/tests.py
 
   deploy:
     needs: lint-and-test-matrix
