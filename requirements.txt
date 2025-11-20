@@ -6,3 +6,4 @@ Pillow >= 10.1
 pytest
 pytest-django
 pytest-factoryboy
+ruff

@@ -1,21 +1,26 @@
 from django.db import transaction
-from django.core.exceptions import ValidationError, PermissionDenied
-from django.utils import timezone
-
 from library.models import Book, BookExchange, StatusBook
+
 
 class BookExchangeError(Exception):
     """Exceção de domínio para erros de troca de livro."""
+
     pass
+
 
 def validate_exchange_request(book: Book, requester_profile):
     if book.owner == requester_profile:
         raise BookExchangeError("Você não pode solicitar a troca do seu próprio livro.")
     if book.status != StatusBook.AVAILABLE.value:
         raise BookExchangeError("O livro não está disponível para troca.")
-    if BookExchange.objects.filter(book=book, requester=requester_profile, status='PENDING').exists():
-        raise BookExchangeError("Você já tem uma solicitação de troca pendente para este livro.")
- 
+    if BookExchange.objects.filter(
+        book=book, requester=requester_profile, status="PENDING"
+    ).exists():
+        raise BookExchangeError(
+            "Você já tem uma solicitação de troca pendente para este livro."
+        )
+
+
 @transaction.atomic
 def create_exchange_request(book_id: int, requester_profile):
     try:

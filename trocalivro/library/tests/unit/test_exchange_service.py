@@ -1,5 +1,5 @@
 import pytest
-from library.services.exchange_service import create_exchange_request, BookExchangeError, PermissionDenied
+from library.services.exchange_service import create_exchange_request, BookExchangeError
 from library.models import StatusBook
 
 @pytest.mark.django_db
@@ -21,7 +21,7 @@ def test_cannot_request_own_book(book_factory, profile_factory):
     owner = profile_factory()
     book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
 
-    with pytest.raises(PermissionDenied):
+    with pytest.raises(BookExchangeError):
         create_exchange_request(book_id=book.id, requester_profile=owner)
 
 @pytest.mark.django_db
