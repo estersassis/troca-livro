@@ -4,6 +4,8 @@ sqlparse==0.5.1
 typing_extensions==4.12.0
 Pillow >= 10.1
 pytest
+selenium
+webdriver-manager
 pytest-django
 pytest-factoryboy
 ruff

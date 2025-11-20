@@ -11,14 +11,14 @@ class BookExchangeError(Exception):
 def validate_exchange_request(book: Book, requester_profile):
     if book.owner == requester_profile:
         raise BookExchangeError("Você não pode solicitar a troca do seu próprio livro.")
-    if book.status != StatusBook.AVAILABLE.value:
-        raise BookExchangeError("O livro não está disponível para troca.")
     if BookExchange.objects.filter(
-        book=book, requester=requester_profile, status="PENDING"
+        book=book, requester=requester_profile, status=StatusBook.IN_EXCHANGE.value
     ).exists():
         raise BookExchangeError(
             "Você já tem uma solicitação de troca pendente para este livro."
         )
+    if book.status != StatusBook.AVAILABLE.value:
+        raise BookExchangeError("O livro não está disponível para troca.")
 
 
 @transaction.atomic
