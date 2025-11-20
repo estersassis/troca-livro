@@ -1,0 +1,18 @@
+[run]
+omit =
+    */tests/*
+    */migrations/*
+    manage.py
+    */factories.py
+    */conftest.py
+    trocalivro/trocalivro/asgi.py
+    trocalivro/trocalivro/wsgi.py
+    trocalivro/trocalivro/settings.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    raise NotImplementedError
+    if __name__ == .__main__.:

@@ -110,3 +110,14 @@ def test_request_exchange_view_request_nonexistent_book(
     assert response.url == reverse("index")
 
     assert BookExchange.objects.count() == 0
+
+@pytest.mark.django_db
+def test_request_exchange_view_get_method_redirects(client, user_factory):
+    user = user_factory()
+    client.force_login(user)
+
+    url = reverse("book-request", args=[1])  # Any book ID
+    response = client.get(url)
+
+    assert response.status_code == 302  # Redirect
+    assert response.url == reverse("index")

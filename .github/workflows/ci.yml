@@ -61,7 +61,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest trocalivro --cov=busfactorpy --cov-report=term-missing --cov-report=xml --cov-report=html
+          pytest trocalivro --cov=trocalivro --cov-report=term-missing --cov-report=xml --cov-report=html
         env:
           PYTHONUNBUFFERED: "1"
 
