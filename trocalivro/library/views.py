@@ -55,9 +55,6 @@ def request_exchange_view(request, id):
 
     try:
         create_exchange_request(book_id=id, requester_profile=request.user.profile)
-    except PermissionDenied as e:
-        messages.error(request, str(e))
-        return redirect('index')
     except BookExchangeError as e:
         messages.warning(request, str(e))
         return redirect('index')

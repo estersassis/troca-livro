@@ -21,4 +21,4 @@ class BookFactory(factory.django.DjangoModelFactory):
         model = Book
     title = factory.Faker("sentence", nb_words=3)
     owner = factory.SubFactory(ProfileFactory)
-    status = StatusBook.AVAILABLE
+    status = StatusBook.AVAILABLE.value
