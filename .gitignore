@@ -15,3 +15,5 @@ trocalivro/db.sqlite3
 trocalivro/library/static/
 .env
 .coverage
+htmlcov/
+coverage.xml
