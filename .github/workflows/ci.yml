@@ -2,10 +2,8 @@ name: Python CI
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
+  
 jobs:
   lint-and-test-matrix:
     name: Lint & Tests (${{ matrix.os }} / Python ${{ matrix.python-version }})
