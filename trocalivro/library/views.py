@@ -77,11 +77,10 @@ def login_view(request):
                 messages.success(request, f"Bem-vindo de volta, {username}!")
                 next_url = request.GET.get('next', 'index')
                 return redirect(next_url)
-            else:
-                messages.error(request, "Usuário ou senha inválidos.")
+            
         else:
             messages.error(request, "Usuário ou senha inválidos.")
     else:
         form = AuthenticationForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
