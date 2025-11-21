@@ -22,6 +22,7 @@
         {% endif %}
         <p class="book-title">{{book_info.book.title}}</p>
         <p class="book-author">{{book_info.book.author}}</p>
+        {% if book_info.status == 'IN EXCHANGE' %}
         <form method="post" action="{% url 'received-books' %}" class="book-response-form">
           {% csrf_token %}
           <input type="hidden" name="exchange_id" value="{{book_info.exchange_id}}">
@@ -31,6 +32,15 @@
             <button type="submit" name="action" value="reject" class="reject-btn">Recusar</button>
           </div>
         </form>
+        {% else %}
+        <div class="exchange-status">
+          {% if book_info.status == 'UNAVAILABLE' %}
+            <span class="status-accepted">✓ Solicitação aceita</span>
+          {% elif book_info.status == 'AVAILABLE' %}
+            <span class="status-rejected">✗ Solicitação recusada</span>
+          {% endif %}
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

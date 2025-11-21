@@ -7,7 +7,7 @@
         <p class="user-name">Olá, {{ user.profile.firstname }}!</p>
         <div class="user-picture">
           <img src="#" alt=""> <!--ADICIONAR FOTO DO USUÁRIO DO BANCO DE DADOS-->
-          <form class="send-book" method="post" action="{% url 'book-add' %}">
+          <form class="send-book" method="get" action="{% url 'book-add' %}">
             {% csrf_token %}
             <button class="add-book-btn" type="submit">Adicionar livro</button>
           </form>
