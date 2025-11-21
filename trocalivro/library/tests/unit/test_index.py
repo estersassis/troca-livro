@@ -1,6 +1,5 @@
 import pytest
 from django.urls import reverse
-from library.models import BookExchange, StatusBook
 
 
 @pytest.mark.django_db
@@ -17,6 +16,7 @@ def test_index_view_lists_books(client, book_factory, profile_factory):
     assert len(books) == 2
     assert books[0] == book2  # Assuming order by -id
     assert books[1] == book1
+
 
 @pytest.mark.django_db
 def test_index_view_lists_books_none(client, book_factory, profile_factory):

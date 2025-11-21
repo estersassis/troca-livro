@@ -8,15 +8,15 @@ Este módulo testa as funcionalidades relacionadas ao gerenciamento de livros:
 - Validação de dados de entrada
 - Tratamento de erros
 """
+
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db import transaction
 
 from library.services.books_management_service import (
     add_new_book,
     display_book_image,
     search_books,
-    BookAdditionError
+    BookAdditionError,
 )
 from library.models import Book, StatusBook
 
@@ -26,58 +26,58 @@ def test_add_new_book_creates_book_successfully(profile_factory):
     """Testa a criação bem-sucedida de um livro com dados válidos"""
     profile = profile_factory()
     book_data = {
-        'title': 'O Senhor dos Anéis',
-        'author': 'J.R.R. Tolkien',
-        'description': 'Um épico de fantasia',
-        'genre': 'Fantasia'
+        "title": "O Senhor dos Anéis",
+        "author": "J.R.R. Tolkien",
+        "description": "Um épico de fantasia",
+        "genre": "Fantasia",
     }
 
     book = add_new_book(book_data, profile)
 
     assert book.id is not None
-    assert book.title == 'O Senhor dos Anéis'
-    assert book.author == 'J.R.R. Tolkien'
-    assert book.description == 'Um épico de fantasia'
-    assert book.genre == 'Fantasia'
+    assert book.title == "O Senhor dos Anéis"
+    assert book.author == "J.R.R. Tolkien"
+    assert book.description == "Um épico de fantasia"
+    assert book.genre == "Fantasia"
     assert book.owner == profile
     assert book.status == StatusBook.AVAILABLE.value
+
 
 @pytest.mark.django_db
 def test_add_new_book_with_image(profile_factory):
     """Testa a criação de livro com imagem"""
     profile = profile_factory()
     book_data = {
-        'title': 'Harry Potter',
-        'author': 'J.K. Rowling',
-        'description': 'Livro de magia',
-        'genre': 'Fantasia'
+        "title": "Harry Potter",
+        "author": "J.K. Rowling",
+        "description": "Livro de magia",
+        "genre": "Fantasia",
     }
-    
+
     image_file = SimpleUploadedFile(
-        "book_cover.jpg",
-        b"fake image content",
-        content_type="image/jpeg"
+        "book_cover.jpg", b"fake image content", content_type="image/jpeg"
     )
 
     book = add_new_book(book_data, profile, book_image=image_file)
 
-    assert book.title == 'Harry Potter'
+    assert book.title == "Harry Potter"
     assert book.image is not None
-    assert book.image.name.endswith('.jpg')
+    assert book.image.name.endswith(".jpg")
+
 
 @pytest.mark.django_db
 def test_add_new_book_raises_error_with_invalid_data(profile_factory):
     """Testa se BookAdditionError é lançada com dados inválidos"""
     profile = profile_factory()
     book_data = {
-        'title': '',  # Campo obrigatório vazio
-        'author': 'Autor Teste',
-        'description': 'Descrição teste'
+        "title": "",  # Campo obrigatório vazio
+        "author": "Autor Teste",
+        "description": "Descrição teste",
     }
 
     with pytest.raises(BookAdditionError) as excinfo:
         add_new_book(book_data, profile)
-    
+
     assert "Dados do livro inválidos" in str(excinfo.value)
 
 
@@ -86,7 +86,7 @@ def test_add_new_book_raises_error_missing_required_fields(profile_factory):
     """Testa erro com campos obrigatórios ausentes"""
     profile = profile_factory()
     book_data = {
-        'author': 'Autor Teste'
+        "author": "Autor Teste"
         # title e description ausentes
     }
 
@@ -217,7 +217,7 @@ def test_search_books_processes_images(book_factory, profile_factory):
     results = search_books("Test")
 
     assert len(results) == 1
-    assert hasattr(results[0], 'image_display_url')
+    assert hasattr(results[0], "image_display_url")
     assert results[0].image_display_url is not None
 
 
@@ -225,7 +225,9 @@ def test_search_books_processes_images(book_factory, profile_factory):
 def test_search_books_by_title_and_author(book_factory, profile_factory):
     """Testa busca que pode encontrar por título ou autor"""
     profile = profile_factory()
-    book1 = book_factory(title="Tolkien Biography", author="Someone Else", owner=profile)
+    book1 = book_factory(
+        title="Tolkien Biography", author="Someone Else", owner=profile
+    )
     book2 = book_factory(title="Random Book", author="J.R.R. Tolkien", owner=profile)
     book3 = book_factory(title="Another Book", author="Other Author", owner=profile)
 

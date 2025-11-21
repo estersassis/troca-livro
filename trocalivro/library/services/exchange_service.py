@@ -59,9 +59,15 @@ def get_received_requests(owner_profile):
 
 
 @transaction.atomic
-def respond_to_exchange_request(exchange_id: int, owner_profile, action: str, message: str = ""):
+def respond_to_exchange_request(
+    exchange_id: int, owner_profile, action: str, message: str = ""
+):
     try:
-        exchange = BookExchange.objects.select_for_update().select_related("book").get(id=exchange_id)
+        exchange = (
+            BookExchange.objects.select_for_update()
+            .select_related("book")
+            .get(id=exchange_id)
+        )
     except BookExchange.DoesNotExist:
         raise BookExchangeError("Solicitação não encontrada.")
 

@@ -33,9 +33,7 @@ def test_cannot_request_own_book(book_factory, profile_factory):
 
     with pytest.raises(BookExchangeError) as excinfo:
         create_exchange_request(book_id=book.id, requester_profile=owner)
-    assert "Você não pode solicitar a troca do seu próprio livro." in str(
-        excinfo.value
-    )
+    assert "Você não pode solicitar a troca do seu próprio livro." in str(excinfo.value)
 
 
 @pytest.mark.django_db
@@ -105,7 +103,9 @@ def test_get_received_requests_returns_only_owner_requests(
     book_owned = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
     other_book = book_factory(owner=other_owner, status=StatusBook.AVAILABLE.value)
 
-    exchange = create_exchange_request(book_id=book_owned.id, requester_profile=requester)
+    exchange = create_exchange_request(
+        book_id=book_owned.id, requester_profile=requester
+    )
     create_exchange_request(book_id=other_book.id, requester_profile=requester)
 
     received_requests = list(get_received_requests(owner))
@@ -114,9 +114,7 @@ def test_get_received_requests_returns_only_owner_requests(
 
 
 @pytest.mark.django_db
-def test_respond_to_exchange_accepts_and_updates_status(
-    profile_factory, book_factory
-):
+def test_respond_to_exchange_accepts_and_updates_status(profile_factory, book_factory):
     owner = profile_factory()
     requester = profile_factory()
     book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
