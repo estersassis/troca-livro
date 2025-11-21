@@ -11,6 +11,7 @@ __pycache__/
 *.egg-info/
 trocalivro/library/__pycache__/
 trocalivro/library/migrations/
+trocalivro/library/static/images/
 trocalivro/db.sqlite3
 .env
 .coverage
