@@ -104,10 +104,6 @@ def book_add(request):
     return render(request, 'book_add.html', {'form':form})
 
 @login_required
-def my_books(request):
-    return render(request, 'profile.html')
-
-@login_required
 def send_books(request):
     sent_requests = get_sent_requests(request.user.profile)
     user_books = []

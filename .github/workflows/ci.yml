@@ -70,8 +70,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Enforce coverage >= 70%
-        run: coverage report --fail-under=70
+      - name: Enforce coverage >= 80%
+        run: coverage report --fail-under=80
 
       - name: Upload HTML coverage report
         if: always()
