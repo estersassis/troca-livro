@@ -111,6 +111,7 @@ def test_request_exchange_view_request_nonexistent_book(
 
     assert BookExchange.objects.count() == 0
 
+
 @pytest.mark.django_db
 def test_request_exchange_view_get_method_redirects(client, user_factory):
     user = user_factory()

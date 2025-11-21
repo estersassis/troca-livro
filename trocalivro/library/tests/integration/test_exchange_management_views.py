@@ -22,7 +22,7 @@ def test_send_books_lists_sent_requests(
     assert "send_books.html" in [t.name for t in response.templates]
     user_books = response.context["user_books"]
     assert len(user_books) == 1
-    assert user_books[0]['book'] == book
+    assert user_books[0]["book"] == book
 
 
 @pytest.mark.django_db
@@ -41,7 +41,9 @@ def test_received_books_lists_requests_and_accepts(
     owner_profile = profile_factory(user=owner_user)
     requester_profile = profile_factory()
     book = book_factory(owner=owner_profile, status=StatusBook.AVAILABLE.value)
-    exchange = create_exchange_request(book_id=book.id, requester_profile=requester_profile)
+    exchange = create_exchange_request(
+        book_id=book.id, requester_profile=requester_profile
+    )
 
     client.force_login(owner_user)
     response = client.get(reverse("received-books"))
@@ -71,7 +73,9 @@ def test_received_books_rejects_request(
     owner_profile = profile_factory(user=owner_user)
     requester_profile = profile_factory()
     book = book_factory(owner=owner_profile, status=StatusBook.AVAILABLE.value)
-    exchange = create_exchange_request(book_id=book.id, requester_profile=requester_profile)
+    exchange = create_exchange_request(
+        book_id=book.id, requester_profile=requester_profile
+    )
 
     client.force_login(owner_user)
     response = client.post(

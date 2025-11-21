@@ -1,5 +1,5 @@
 from django.db import transaction
-from library.models import Book, BookExchange, StatusBook
+from library.models import Book, StatusBook
 from library.forms import BookForm
 
 
@@ -7,6 +7,7 @@ class BookAdditionError(Exception):
     """Exceção de domínio para erros na adição de livros."""
 
     pass
+
 
 def display_book_image(book):
     # Normaliza o caminho da imagem para ser usado pelo {% static %} no template.
@@ -18,6 +19,7 @@ def display_book_image(book):
     else:
         book.image_display_url = "images/no-image.png"
     return book
+
 
 @transaction.atomic
 def add_new_book(book_data, owner_profile, book_image=None):
@@ -35,8 +37,17 @@ def add_new_book(book_data, owner_profile, book_image=None):
     book.save()
     return book
 
+
 def search_books(query):
-    books = Book.objects.filter(title__icontains=query)
+    if not query:
+        return []
+
+    books_author = Book.objects.filter(author__icontains=query)
+    books_title = Book.objects.filter(title__icontains=query)
+    books = (books_author | books_title).distinct()
+
+    processed_books = []
     for book in books:
-        book.image_display_url = display_book_image(book) 
-    return books
+        processed_book = display_book_image(book)
+        processed_books.append(processed_book)
+    return processed_books
