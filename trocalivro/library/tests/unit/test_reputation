@@ -7,47 +7,32 @@ from library.models import StatusBook, Profile
 
 @pytest.mark.django_db
 def test_initial_reputation_is_five(profile_factory):
-    """
-    Test that a new user starts with a reputation of 5.
-    """
     new_user = profile_factory()
     assert new_user.reputation == 5
 
 @pytest.mark.django_db
 def test_reputation_increases_on_accept(profile_factory, book_factory):
-    """
-    Test that when an owner accepts a request, their reputation increases by 1.
-    """
-    # 1. Setup
     owner = profile_factory()
     requester = profile_factory()
     book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
     
-    # Create the request
     exchange = create_exchange_request(book_id=book.id, requester_profile=requester)
     
     initial_reputation = owner.reputation
 
-    # 2. Action: Owner accepts the request
     respond_to_exchange_request(
         exchange_id=exchange.id,
         owner_profile=owner,
         action="accept",
-        message="Enjoy the book!"
+        message="Teste"
     )
 
-    # 3. Verification
     owner.refresh_from_db()
     
-    # Owner should gain +1 reputation for a successful exchange
     assert owner.reputation == initial_reputation + 1
 
 @pytest.mark.django_db
 def test_reputation_unchanged_on_reject(profile_factory, book_factory):
-    """
-    Test that rejecting a request does NOT change reputation.
-    """
-    # 1. Setup
     owner = profile_factory()
     requester = profile_factory()
     book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
@@ -56,27 +41,19 @@ def test_reputation_unchanged_on_reject(profile_factory, book_factory):
     
     initial_reputation = owner.reputation
 
-    # 2. Action: Owner rejects the request
     respond_to_exchange_request(
         exchange_id=exchange.id,
         owner_profile=owner,
         action="reject",
-        message="Sorry, changed my mind."
+        message="Teste."
     )
 
-    # 3. Verification
     owner.refresh_from_db()
     
-    # Reputation should stay the same
     assert owner.reputation == initial_reputation
 
 @pytest.mark.django_db
 def test_requester_reputation_behavior(profile_factory, book_factory):
-    """
-    Optional: Test if the requester also gains reputation (depending on your business rules).
-    For now, let's assume only the Giver (Owner) gets reputation.
-    This test ensures the Requester's reputation remains stable.
-    """
     owner = profile_factory()
     requester = profile_factory()
     book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
@@ -92,5 +69,4 @@ def test_requester_reputation_behavior(profile_factory, book_factory):
     )
     
     requester.refresh_from_db()
-    # Assuming we only reward the book owner:
     assert requester.reputation == initial_req_reputation
