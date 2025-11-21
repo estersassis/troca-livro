@@ -131,8 +131,6 @@ def received_books(request):
                 action=action,
                 message=message_text,
             )
-        except (TypeError, ValueError):
-            messages.warning(request, "Solicitação inválida.")
         except BookExchangeError as e:
             messages.warning(request, str(e))
         else:

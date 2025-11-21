@@ -36,7 +36,15 @@ def add_new_book(book_data, owner_profile, book_image=None):
     return book
 
 def search_books(query):
-    books = Book.objects.filter(title__icontains=query)
+    if not query:
+        return []
+    
+    books_author = Book.objects.filter(author__icontains=query)
+    books_title = Book.objects.filter(title__icontains=query)
+    books = (books_author | books_title).distinct()
+    
+    processed_books = []
     for book in books:
-        book.image_display_url = display_book_image(book) 
-    return books
+        processed_book = display_book_image(book) 
+        processed_books.append(processed_book)
+    return processed_books

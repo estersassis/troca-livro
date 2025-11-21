@@ -43,9 +43,6 @@ class Book(models.Model):
   created_at = models.DateField(default=timezone.now)
   owner = models.ForeignKey(Profile, on_delete = models.CASCADE)
 
-  def get_absolute_url(self):
-    return reverse('book-detail', args=[str(self.id)])
-
 
 # Tabela que irá armazenar as informações das trocas entre os usuários.
 class BookExchange(models.Model):
