@@ -22,6 +22,15 @@
         {% endif %}
         <p class="book-title">{{book_info.book.title}}</p>
         <p class="book-author">{{book_info.book.author}}</p>
+        <form method="post" action="{% url 'received-books' %}" class="book-response-form">
+          {% csrf_token %}
+          <input type="hidden" name="exchange_id" value="{{book_info.exchange_id}}">
+          <input type="text" name="message" placeholder="Mensagem (opcional)" class="response-message">
+          <div class="response-actions">
+            <button type="submit" name="action" value="accept" class="accept-btn">Aceitar</button>
+            <button type="submit" name="action" value="reject" class="reject-btn">Recusar</button>
+          </div>
+        </form>
     </div>
     {% endfor %}
 </div>

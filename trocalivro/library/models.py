@@ -54,14 +54,17 @@ class BookExchange(models.Model):
     requester = models.ForeignKey(Profile, related_name='requested_books', on_delete=models.CASCADE)
     owner = models.ForeignKey(Profile, related_name='owned_books', on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=[(tag.name, tag.value) for tag in StatusBook])
+    message = models.TextField(blank=True, default="")
     
 
     def save(self, *args, **kwargs):
         # Atualiza o status do livro com base no status da troca
-        if self.status == StatusBook.IN_EXCHANGE.value:
-            self.book.status = StatusBook.IN_EXCHANGE.value
-            self.book.save()
-        elif self.status == StatusBook.AVAILABLE.value:
-            self.book.status = StatusBook.AVAILABLE.value
-            self.book.save()
+        if self.status in (
+            StatusBook.IN_EXCHANGE.value,
+            StatusBook.AVAILABLE.value,
+            StatusBook.UNAVAILABLE.value,
+        ):
+            if self.book.status != self.status:
+                self.book.status = self.status
+                self.book.save()
         super().save(*args, **kwargs)
