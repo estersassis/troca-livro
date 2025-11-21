@@ -1,0 +1,45 @@
+.book-details-wrapper{
+  font-family: 'Public Sans', serif;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 60%;
+}
+
+.cover-container{
+  width: 20%;
+  height: 50%;
+  display:grid;
+  gap: 10px;
+}
+.cover-container img{
+  width: 100%;
+}
+
+.cover-container button{
+  width: 100%;
+  height: 45px;
+  background: #283044;
+  border-radius: 50px;
+  color:#EBF5EE;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.cover-container button:hover {
+  background-color: #FFFFFF;
+  border: solid 1px #283044;
+  color:#283044;
+  cursor: pointer;
+  transition: ease-in 0.2s;
+}
+
+
+.information-container{
+  width: 60%;
+  height: 100%;
+  display: inline-block;
+}
+
+

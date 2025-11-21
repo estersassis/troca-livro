@@ -1,0 +1,64 @@
+.profile-sidebar {
+  font-family: 'Public Sans';
+  background: #e9e5cd;
+  width: 20%;
+  position: fixed; 
+  left: 0;
+  margin-left: 10%;
+  padding: 30px;
+  display: grid;
+  place-items: left;
+  border-radius: 20px;
+}
+
+.user-name{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  text-align: center;
+  color: #283044;
+}
+
+.add-book-btn{
+  width: 100%;
+  height: 50px;
+  background: #283044;
+  border-radius: 50px;
+  color:#EBF5EE;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.add-book-btn:hover {
+  background-color: #FFFFFF;
+  color:#283044;
+  cursor: pointer;
+  transition: ease-in 0.2s;
+}
+
+.menu-container{
+  list-style: none;
+  padding-top: 5%;
+}
+
+.menu-heading {
+  padding-top: 5%;
+  font-weight: 700;
+  text-align: center;
+  color: #283044;
+}
+
+.menu-option{
+font-weight: 400;
+color: #283044;
+text-decoration: none;
+}
+
+.menu-option:hover {
+  font-weight: 400;
+  color: #576380;
+  text-decoration: none;
+  cursor: pointer;
+  transition: ease-in 0.2s;
+}

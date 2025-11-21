@@ -1,0 +1,64 @@
+.index-main-content {
+  padding-top: 3%;
+  font-family: 'Public Sans';
+  width: 80%;
+  float: center;
+  /* position: absolute; */
+}
+
+.index-card{
+  width: 100%;
+  background-color: #283044;
+  display:flex;
+  justify-content: space-between;
+}
+
+.card-image {
+  width: 50%;
+}
+
+.card-image img {
+  padding-top: 3%;
+  width: 100%;
+}
+
+.card-text{
+  font-family: "Public Sans", serif;
+  padding-left: 3%;
+  padding-right: 10%;
+  padding-top: 5%;
+  color: #FFFFFF;
+  /* background-color: chocolate; */
+}
+
+.card-heading {
+  font-weight: 700;
+}
+
+.card-btn button {
+  width: 30%;
+  height: 50px;
+  background: #FFFFFF;
+  border-radius: 50px;
+  color:#283044;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.card-btn button a {
+  text-decoration: none;
+}
+
+.card-btn button a:visited{
+  color: inherit;
+}
+
+.card-btn button:hover {
+  background-color: transparent;
+  color:#FFFFFF;
+  border: solid 1px;
+  border-color: #FFFFFF;
+  cursor: pointer;
+  transition: ease-in 0.2s;
+}

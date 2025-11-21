@@ -1,0 +1,55 @@
+.input-box,
+.input-profile {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+.input-box input {
+    width: 100%;
+    margin: 0.6rem 0;
+    padding: 0.8rem 0.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: #000000;
+}
+
+.input-box input:hover {
+    background-color: #eeeeee75;
+}
+
+.input-box input:focus-visible {
+    outline: 1.5px solid #BFA89E;
+}
+
+.input-box label {
+    text-align: left; 
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.input-box input::placeholder {
+    color: #000000be;
+}
+
+.input-profile input{
+    width: 60%;
+    margin: 0.6rem 0;
+    padding: 0.8rem 0.5rem;
+    border: solid 1px #808080;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: #283044;
+    font-size: 14px;
+}
+
+.input-profile input:hover {
+    color: #b1b1b1;
+    border-color: #b1b1b1;
+}
+
+.input-profile input:focus-visible {
+    outline: 1.5px solid #283044;
+}
