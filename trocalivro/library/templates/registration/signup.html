@@ -1,6 +1,6 @@
 {%extends "base_generic.html"%}
 
-{% block content%}
+{% block content %}
     <div class="container">
         <div class="form">
             <div class="form-header">
@@ -8,20 +8,37 @@
                     <h1>Cadastre-se</h1>
                     <p>Preencha seus dados</p>
                 </div>
-                <div class="subtitle">
-                </div>
             </div>
+
             <form method="post">
                 {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="error-message" style="color: red; margin-bottom: 15px;">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <div class="input-group">
                     {% for field in form %}
                         <div class="input-box">
-                            <label for="firstname">{{ field.label_tag }}</label>
-                            {{ field }} 
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            
+                            {% if field.errors %}
+                                <div style="color: red; font-size: 0.9em;">
+                                    {% for error in field.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
-                    <input class="submit-button" type="submit" value="Enviar">
+                
+                <input class="submit-button" type="submit" value="Enviar">
             </form>
         </div>
     </div>
