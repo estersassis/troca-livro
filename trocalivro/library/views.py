@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import Http404
 
-from library.forms import EditProfile, SignUpForm
+from library.forms import EditProfile, SignUpForm, BookForm
 from .models import Book
 from .services.exchange_service import (
     BookExchangeError,
@@ -15,26 +15,15 @@ from .services.exchange_service import (
     get_sent_requests,
     respond_to_exchange_request,
 )
+from .services.books_management_service import add_new_book, search_books, display_book_image, BookAdditionError
 
-# Criado função responsavel por exibir imagens dos livros
-def display_book_image(book):
-    # Normaliza o caminho da imagem para ser usado pelo {% static %} no template.
-    if getattr(book, "image", None) and book.image.name:
-        image_path = book.image.name
-        if "library/static/" in image_path:
-            image_path = image_path.split("library/static/")[-1]
-        book.image_display_url = image_path
-    else:
-        book.image_display_url = "images/no-image.png"
-    return book
 
 def index(request):
     num_books = Book.objects.all().count()
     book_list = Book.objects.all()
    
-    # Instanciado função para exibir a imagem dos livros
     for book in book_list:
-       book.image_display_url = display_book_image(book) 
+       book = display_book_image(book) 
 
     book_list = list(reversed(book_list))
 
@@ -76,7 +65,7 @@ def profile(request):
     user_books = Book.objects.filter(owner=request.user.profile)
 
     for book in user_books:
-        book.image_display_url = display_book_image(book)
+        book = display_book_image(book)
 
     user_books = list(reversed(user_books))
 
@@ -103,16 +92,33 @@ def edit_profile(request):
 
 @login_required
 def book_add(request):
-    ...
+    if request.method == 'POST':
+        try:
+            book = add_new_book(request.POST, request.user.profile, request.FILES.get('image'))
+            return redirect('book-detail', id=book.pk)
+        except BookAdditionError as e:
+            messages.warning(request, str(e))
+            return redirect('index')
+    else:
+        form = BookForm()
+    return render(request, 'book_add.html', {'form':form})
 
 @login_required
 def my_books(request):
-    ...
+    return render(request, 'profile.html')
 
 @login_required
 def send_books(request):
     sent_requests = get_sent_requests(request.user.profile)
-    user_books = [display_book_image(exchange.book) for exchange in sent_requests]
+    user_books = []
+    for exchange in sent_requests:
+        book_info = {
+            'book': display_book_image(exchange.book),
+            'status': exchange.status,
+            'owner_name': exchange.book.owner.firstname,
+            'exchange_id': exchange.id
+        }
+        user_books.append(book_info)
     return render(request, 'send_books.html', {'user_books': user_books})
 
 @login_required
@@ -146,7 +152,7 @@ def received_books(request):
         book = display_book_image(exchange.book)
         user_books.append(
             {
-                "book": book,
+                "book": display_book_image(book),
                 "requester_name": exchange.requester.firstname,
                 "exchange_id": exchange.id,
                 "message": exchange.message,
@@ -168,7 +174,12 @@ def book_detail_view(request, id):
     return render(request, 'book_detail.html', {'book_info': book_info})
 
 def search_book(request):
-    ...
+    query = request.GET.get('q')
+    if query:
+        books = search_books(query)
+    else:
+        books = []
+    return render(request, 'index.html', {'book_list': books})
     
 # View para solicitar a troca de um livro
 @login_required

@@ -22,7 +22,7 @@ def test_send_books_lists_sent_requests(
     assert "send_books.html" in [t.name for t in response.templates]
     user_books = response.context["user_books"]
     assert len(user_books) == 1
-    assert user_books[0] == book
+    assert user_books[0]['book'] == book
 
 
 @pytest.mark.django_db

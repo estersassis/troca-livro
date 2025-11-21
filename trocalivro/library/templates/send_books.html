@@ -4,24 +4,34 @@
 <div class="profile-page">
   <h2 class="page-title"> Solicitações enviadas </h2>
   <div class="books-container">
-    {% for book in user_books %}
+    {% for book_info in user_books %}
     <div class="user-book">
       <span class="book-request">Você</span> 
       <span>solicitou para</span>
-      <span class="book-request">{{book.owner.firstname}}</span>
-      {% if book.image %}
-      <a href="{% url 'book-detail' id=book.id %}">
+      <span class="book-request">{{book_info.owner_name}}</span>
+      {% if book_info.book.image %}
+      <a href="{% url 'book-detail' id=book_info.book.id %}">
       {%load static %}
-        <img src="{%static book.image_display_url %}" alt="{{ book.title }}">
+        <img src="{%static book_info.book.image_display_url %}" alt="{{ book_info.book.title }}">
     </a>
       {% else %}
-      <a href="{% url 'book-detail' id=book.id %}">
+      <a href="{% url 'book-detail' id=book_info.book.id %}">
         {%load static %}
         <img src="{%static 'images/no-image.png' %}" alt="No image available">
       </a>
       {% endif %}
-      <p class="book-title">{{ book.title }}</p>
-      <p class="book-author">{{ book.author }}</p> 
+      <p class="book-title">{{ book_info.book.title }}</p>
+      <p class="book-author">{{ book_info.book.author }}</p>
+      
+      <div class="exchange-status">
+        {% if book_info.status == 'IN EXCHANGE' %}
+          <span class="status-pending">⏳ Aguardando resposta</span>
+        {% elif book_info.status == 'UNAVAILABLE' %}
+          <span class="status-accepted">✓ Solicitação aceita</span>
+        {% elif book_info.status == 'AVAILABLE' %}
+          <span class="status-rejected">✗ Solicitação recusada</span>
+        {% endif %}
+      </div>
     </div> 
     {% endfor %}
   </div>
