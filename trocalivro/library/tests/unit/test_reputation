@@ -1,0 +1,72 @@
+import pytest
+from library.services.exchange_service import (
+    respond_to_exchange_request,
+    create_exchange_request
+)
+from library.models import StatusBook, Profile
+
+@pytest.mark.django_db
+def test_initial_reputation_is_five(profile_factory):
+    new_user = profile_factory()
+    assert new_user.reputation == 5
+
+@pytest.mark.django_db
+def test_reputation_increases_on_accept(profile_factory, book_factory):
+    owner = profile_factory()
+    requester = profile_factory()
+    book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
+    
+    exchange = create_exchange_request(book_id=book.id, requester_profile=requester)
+    
+    initial_reputation = owner.reputation
+
+    respond_to_exchange_request(
+        exchange_id=exchange.id,
+        owner_profile=owner,
+        action="accept",
+        message="Teste"
+    )
+
+    owner.refresh_from_db()
+    
+    assert owner.reputation == initial_reputation + 1
+
+@pytest.mark.django_db
+def test_reputation_unchanged_on_reject(profile_factory, book_factory):
+    owner = profile_factory()
+    requester = profile_factory()
+    book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
+    
+    exchange = create_exchange_request(book_id=book.id, requester_profile=requester)
+    
+    initial_reputation = owner.reputation
+
+    respond_to_exchange_request(
+        exchange_id=exchange.id,
+        owner_profile=owner,
+        action="reject",
+        message="Teste."
+    )
+
+    owner.refresh_from_db()
+    
+    assert owner.reputation == initial_reputation
+
+@pytest.mark.django_db
+def test_requester_reputation_behavior(profile_factory, book_factory):
+    owner = profile_factory()
+    requester = profile_factory()
+    book = book_factory(owner=owner, status=StatusBook.AVAILABLE.value)
+    
+    exchange = create_exchange_request(book_id=book.id, requester_profile=requester)
+    
+    initial_req_reputation = requester.reputation
+    
+    respond_to_exchange_request(
+        exchange_id=exchange.id,
+        owner_profile=owner,
+        action="accept"
+    )
+    
+    requester.refresh_from_db()
+    assert requester.reputation == initial_req_reputation
