@@ -11,12 +11,21 @@
   {% endif %}
   <form action="{% url 'book-request' id=book_info.book.id %}" method="post">
     {% csrf_token %}
-    {% if book_info.book.owner.firstname != book_info.user.firstname %}
-      {%if book_info.book.status == 'AVAILABLE'%}
-        <button class="request-book-btn" type="submit">Solicitar troca</button>
-      {%endif%}
-    {%endif%}
-    </form>
+    
+    {% if book_info.user %}
+    
+        {% if book_info.book.owner.id != book_info.user.id %}
+        
+            {% if book_info.book.status == 'AVAILABLE' %}
+                <button class="request-book-btn" type="submit">Solicitar troca</button>
+            {% endif %}
+            
+        {% endif %}
+        
+    {% else %}
+        <p><a href="{% url 'custom_login' %}">Faça login</a> para solicitar este livro.</p>
+    {% endif %}
+</form>
 
 </div>
 
